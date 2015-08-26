@@ -4,33 +4,43 @@
 import requests
 import json
 import parser
+import data
+import sys
 
-_DEBUG_LESSGET = True
+from config import _DEBUG_LESSGET
+from config import _INIT_DB
 
 if __name__ == "__main__":
-    print 'hihi'
+    print 'crawler has started!'
     # Get all countries
     res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/address_json_db.jsp?keyNames=00000&p=0')
     # print res.status_code
     # print res.headers
-    counties = json.loads(res.text.strip())[1:]
+    districts = json.loads(res.text.strip())[1:]
+    db = data.storage()
+    with db:
+        if _INIT_DB:
+            db.initialize()
+        db.insert_districts(districts)
     ss = requests.session()
     count4 = 2
 
-    # Foreach country
-    for country in counties:
-        print country['name'], country['no']
+    # Foreach district
+    for district in districts:
+        print district['name'], district['no']
     
         # Get administrative district
 #         print '   ------'
-#         res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/address_json_db.jsp?keyNames=%s&p=1' % country['no'])
+#         res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/address_json_db.jsp?keyNames=%s&p=1' % district['no'])
 #         data2 = json.loads(res.text.strip())[1:]
 #         for n in data2:
 #             print '  ', n['name'], n['no']
     
         # Get Nanny Systems
-        res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/cwsys_json_db.jsp?keyNames=%s' % country['no'])
+        res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/cwsys_json_db.jsp?keyNames=%s' % district['no'])
         nannysystems = json.loads(res.text.strip())[1:]
+        with db:
+            db.insert_nannysystems(district['no'], nannysystems)
         if _DEBUG_LESSGET:
             count3 = 2
 
@@ -40,7 +50,7 @@ if __name__ == "__main__":
     
             payload = {
                 'MEM_CITY':'',
-                'MEM_REGION':'%s' % country['no'], #6300000000
+                'MEM_REGION':'%s' % district['no'], #6300000000
                 'd11':'', 'd12':'', 'd21':'', 'd22':'', 'd31':'', 'd32':'', 'd41':'',
                 'd51':'', 'd52':'', 'd61':'', 'd62':'', 'd71':'', 'd72':'',
                 'imageField2.x':'', #47
@@ -56,7 +66,7 @@ if __name__ == "__main__":
 
             # Foreach page of nanny list
             while True:
-                print '    parameter %s' % listparameter
+                print '    listpage %s' % listparameter
                 res = ss.get(listurl+listparameter)
                 sns = parser.parseNannyLink(res.text)
                 nextpage = parser.parseNannyLinkPage(res.text)
@@ -101,7 +111,7 @@ if __name__ == "__main__":
             if count4 == 0:
                 print '>> count4 break'
                 break
-    # Foreach country END
+    # Foreach district END
 
 
 
