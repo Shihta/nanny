@@ -74,10 +74,12 @@ if __name__ == "__main__":
                     count = 3
 
                 # Foreach nanny on the page
+                nannies = []
                 for sn in sns:
                     print '      sn=%s' % sn
                     res = ss.post('http://cwisweb.sfaa.gov.tw/04nanny/03view.jsp', data={'sn':sn})
                     detail = parser.parseNannyDetails(res.text)
+                    nannies.append(detail)
     #                 for dd in detail:
     #                     print '<%s>' % dd
     #                 print '---------------------'
@@ -86,6 +88,9 @@ if __name__ == "__main__":
                         if count == 0:
                             print '      >> count break'
                             break
+                if len(nannies) > 0:
+                    with db:
+                        db.insert_nannies(nannysystem['no'], nannies)
                 # Foreach nanny on the page END
 
                 if nextpage == None:

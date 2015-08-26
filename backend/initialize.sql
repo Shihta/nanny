@@ -1,6 +1,7 @@
 PRAGMA encoding = "UTF-8";
 CREATE TABLE "nannies" (
 "nanny_id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+"nannysystem_no" VARCHAR,
 "name" VARCHAR,
 "reg_num" VARCHAR,
 "certificate" VARCHAR,

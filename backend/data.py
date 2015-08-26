@@ -8,6 +8,7 @@ class storage(object):
     _DB_NAME = 'nanny.sqlite'
     _CONN = None
     _NANNIES_COL = []
+    _NANNIES_COL_STR = None
 
     def __init__(self, dbname=None):
         if dbname:
@@ -31,6 +32,8 @@ class storage(object):
         self._NANNIES_COL = []
         for row in self._CONN.execute('PRAGMA table_info(nannies)'):
             self._NANNIES_COL.append(row[1])
+        self._NANNIES_COL = self._NANNIES_COL[1:]
+        self._NANNIES_COL_STR = ",".join(self._NANNIES_COL)
 
     def initialize(self, initfile=None):
         self._CONN.close()
@@ -59,6 +62,12 @@ class storage(object):
     def insert_nannysystems(self, district, nannysystems):
         for nannysystem in nannysystems:
             sql = 'INSERT INTO nannysystems (district_no, name, no) VALUES ("%s", "%s", "%s");' % (district, nannysystem['name'], nannysystem['no'])
+            self._CONN.execute(sql)
+        self._CONN.commit()
+
+    def insert_nannies(self, nannysystem, nannies):
+        for nanny in nannies:
+            sql = 'INSERT INTO nannies (%s) VALUES ("%s",%s)' % ( self._NANNIES_COL_STR, nannysystem, u",".join(map(lambda i: u'"%s"' % (i,), nanny)) )
             self._CONN.execute(sql)
         self._CONN.commit()
 
