@@ -67,12 +67,12 @@ if __name__ == "__main__":
     with open('testdata/d.html') as f:
         html = f.read()
     detail = parseNannyLinkPage(html)
-    print detail
+    print detail, type(detail)
 
     with open('testdata/e.html') as f:
         html = f.read()
     detail = parseNannyLinkPage(html)
-    print detail
+    print detail, type(detail)
 
 
 
