@@ -9,6 +9,7 @@ If you build this system in [RASPBIAN], you could refer to [Locust] for environm
 There is a problem when you [install lxml by pip]
 ```sh
 apt-get install libxml2-dev libxslt1-dev
+pip install requests pyquery uwsgi flask
 ```
 
 [install lxml by pip]:http://stackoverflow.com/questions/5178416/pip-install-lxml-error
