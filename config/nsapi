@@ -1,0 +1,25 @@
+#!/bin/sh
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+case $1 in
+	start)
+        cd /usr/src/nanny/backend
+        sudo -u nginx uwsgi --ini nsapi.ini > /dev/null 2>&1 &
+  		;;
+	stop)
+        PID=$(ps -ef |grep 'nginx uwsgi' |grep -v grep |awk {'print $2'})
+        echo $PID
+        kill $PID
+  		;;
+	restart|force-reload)
+		$0 stop && sleep 4 && $0 start
+  		;;
+	reload)
+		exit 3
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|force-reload}"
+		exit 2
+		;;
+esac
