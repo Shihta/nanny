@@ -4,6 +4,7 @@
 import data
 import sys
 import json
+# from flask_jsonp import jsonpify
 
 def showtable():
     db = data.storage()
@@ -24,8 +25,19 @@ def showjson():
         districts = [i for i in db.execute('select * from districts')]
         js = json.dumps(districts, encoding="utf-8")
         print js
+        nannysystems = {}
+        for d in districts:
+            tmp = [i for i in db.execute('select name, no from nannysystems where district_no = "%s"' % d[1])]
+#             print tmp
+            nannysystems[d[1]] = tmp
+#         for k, v in nannysystems.iteritems():
+#             print k, v
+        print json.dumps(nannysystems, encoding="utf-8")
+
 
 if __name__ == "__main__":
     print 'hihi misc'
 #     showtable()
     showjson()
+
+
