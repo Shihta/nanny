@@ -5,7 +5,7 @@ jQuery(document).ready(function () {
     jQuery('#content').css('width', '77%');
     jQuery('#links').css('width', '20%');
     jQuery('#links-row-2').css('width', '100%');
-    jQuery('div.article-content-inner ul').remove()
+    jQuery('div.article-content-inner ul').remove();
     jQuery('div.article-content-inner p:first').after('<div id="NanniesBar"></div><div id="NanniesSearchSystem"></div>');
 
     var districts = [["\u81fa\u5317\u5e02", "6300000000"], ["\u65b0\u5317\u5e02", "6500000000"], ["\u6843\u5712\u5e02", "6800000000"], ["\u81fa\u4e2d\u5e02", "6600000000"], ["\u81fa\u5357\u5e02", "6700000000"], ["\u9ad8\u96c4\u5e02", "6400000000"], ["\u5b9c\u862d\u7e23", "1000200000"], ["\u65b0\u7af9\u7e23", "1000400000"], ["\u82d7\u6817\u7e23", "1000500000"], ["\u5f70\u5316\u7e23", "1000700000"], ["\u5357\u6295\u7e23", "1000800000"], ["\u96f2\u6797\u7e23", "1000900000"], ["\u5609\u7fa9\u7e23", "1001000000"], ["\u5c4f\u6771\u7e23", "1001300000"], ["\u53f0\u6771\u7e23", "1001400000"], ["\u82b1\u84ee\u7e23", "1001500000"], ["\u6f8e\u6e56\u7e23", "1001600000"], ["\u57fa\u9686\u5e02", "1001700000"], ["\u65b0\u7af9\u5e02", "1001800000"], ["\u5609\u7fa9\u5e02", "1002000000"], ["\u9023\u6c5f\u7e23", "0900700000"], ["\u91d1\u9580\u7e23", "0902000000"]];
@@ -16,6 +16,8 @@ jQuery(document).ready(function () {
     var pre_selection = "";
     district_selector.append(jQuery("<option/>", {value:'', text:'請選擇'}));
     jQuery('#NanniesBar').append(district_selector).append(ns_selector).append(btn);
+    jQuery('.article-content-inner select:first').css('width', '90');
+    jQuery('.article-content-inner select:last').css('width', '250');
     for (i = 0; i<districts.length; i++) {
 //    	console.log(districts[i])
     	district_selector.append(jQuery("<option/>", {value:districts[i][1], text:districts[i][0]}));
@@ -40,7 +42,7 @@ jQuery(document).ready(function () {
     	//臺北市中山區社區保母系統 CW10107060
     	if (ns_selector.attr('value') != "" && pre_selection != ns_selector.attr('value')) {
     		pre_selection = ns_selector.attr('value');
-	    	var apiurl = "http://127.0.0.1:5000/api/getnannies/"+ns_selector.attr('value')+"?callback=?";
+	    	var apiurl = "http://nanny.stark.tw/api/getnannies/"+ns_selector.attr('value')+"?callback=?";
 	    	jQuery.getJSON(apiurl, {
 	    	}).done( function(data) {
 	    		jQuery("#NanniesSearchSystem").empty().append(jQuery("<table/>", {id:"NanniesSearchResultTable", border:"1"}));

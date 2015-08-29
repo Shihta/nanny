@@ -18,6 +18,7 @@ pip install requests pyquery uwsgi flask
 
 [JavaScript Editor Plugin for Eclipse]
 
+[uwsgi log rotate]
 
 
 [install lxml by pip]:http://stackoverflow.com/questions/5178416/pip-install-lxml-error
@@ -26,3 +27,4 @@ pip install requests pyquery uwsgi flask
 [RASPBIAN]:https://www.raspberrypi.org/downloads/
 [How To Serve Flask Applications with uWSGI and Nginx on Ubuntu 14.04]:https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04
 [JavaScript Editor Plugin for Eclipse]:http://stackoverflow.com/questions/12269560/javascript-editor-plugin-for-eclipse
+[uwsgi log rotate]:http://www.chenyudong.com/archives/uwsgi-log-rotate-by-date.html
