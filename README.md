@@ -14,6 +14,13 @@ apt-get install libxml2-dev libxslt1-dev
 pip install requests pyquery uwsgi flask
 ```
 
+## PHP
+
+If you get installation problem like [curl problem].
+
+If you get blank page, please refer to [nginx File not found]
+
+
 ## Misc
 
 [JavaScript Editor Plugin for Eclipse]
@@ -28,3 +35,5 @@ pip install requests pyquery uwsgi flask
 [How To Serve Flask Applications with uWSGI and Nginx on Ubuntu 14.04]:https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04
 [JavaScript Editor Plugin for Eclipse]:http://stackoverflow.com/questions/12269560/javascript-editor-plugin-for-eclipse
 [uwsgi log rotate]:http://www.chenyudong.com/archives/uwsgi-log-rotate-by-date.html
+[curl problem]:http://www.mitchyb.com/2015/05/installing-aws-sdk-for-php-onto-my.html
+[nginx File not found]:http://www.nginx.cn/562.html
