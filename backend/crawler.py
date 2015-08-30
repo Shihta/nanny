@@ -17,7 +17,10 @@ if __name__ == "__main__":
     # print res.status_code
     # print res.headers
     districts = json.loads(res.text.strip())[1:]
-    db = data.storage()
+    if len(sys.argv) > 1:
+        db = data.storage(sys.argv[1])
+    else:
+        db = data.storage()
     with db:
         if _INIT_DB:
             db.initialize()

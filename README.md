@@ -4,7 +4,26 @@
 
 If you build this system in [RASPBIAN], you could refer to [Locust] for environment building.
 
+## Usage
+
+### API service
+
+If you want to run API service as debug mode:
+```sh
+python nsapi.py
+```
+
+If you want to run API service via uWSGI, my script is ***config/nsapi***.
+
+My nginx config is ***config/nanny.stark.tw.conf***.
+
+### Crawler
+
+You can refer to ***config/crawler.sh***
+
 ## Python Virtual Environment
+
+Requirement: ***requests pyquery uwsgi flask***
 
 You can find most of environment configurations in [How To Serve Flask Applications with uWSGI and Nginx on Ubuntu 14.04]
 
