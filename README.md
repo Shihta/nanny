@@ -4,6 +4,8 @@
 
 If you build this system in [RASPBIAN], you could refer to [Locust] for environment building.
 
+Online system: [台灣保母搜尋系統](http://tinyurl.com/twnanny)
+
 ## Usage
 
 ### API service
@@ -20,6 +22,10 @@ My nginx config is ***config/nanny.stark.tw.conf***.
 ### Crawler
 
 You can refer to ***config/crawler.sh***
+
+### Database
+
+If you don't want to crawl data by yourself, you can use ***backend/dump_20150901.sql*** directly.
 
 ## Python Virtual Environment
 

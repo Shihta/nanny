@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PWD="/usr/src/nanny/backend"
+export PYTHONIOENCODING=utf-8
 
 cd $PWD
 
