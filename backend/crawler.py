@@ -6,12 +6,33 @@ import json
 import parser
 import data
 import sys
+import traceback
+import logging, logging.handlers
 
 from config import _DEBUG_LESSGET
 from config import _INIT_DB
 
+LOG_FILENAME = 'NCrawler.log'
+
+def recordTraceBack(logger):
+    try:
+        formatted_lines = traceback.format_exc().splitlines()
+        for i in formatted_lines:
+            logger.error(i)
+    except:
+        pass
+
 if __name__ == "__main__":
     print 'crawler has started!'
+    logger = logging.getLogger('NCrawler')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.handlers.RotatingFileHandler(
+            LOG_FILENAME, maxBytes=1048576, backupCount=5, encoding = "utf-8")
+    formatter = logging.Formatter("%(asctime)s %(levelname)s-%(name)s %(message)s")
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.info('Program started!')
+
     # Get all countries
     res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/address_json_db.jsp?keyNames=00000&p=0')
     # print res.status_code
@@ -25,7 +46,6 @@ if __name__ == "__main__":
         if _INIT_DB:
             db.initialize()
         db.insert_districts(districts)
-    ss = requests.session()
     count4 = 2
 
     # Foreach district
@@ -40,7 +60,18 @@ if __name__ == "__main__":
 #             print '  ', n['name'], n['no']
     
         # Get Nanny Systems
-        res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/cwsys_json_db.jsp?keyNames=%s' % district['no'])
+        retryc = 5
+        while True:
+            try:
+                res = requests.post('http://cwisweb.sfaa.gov.tw/js_molde/cwsys_json_db.jsp?keyNames=%s' % district['no'])
+            except Exception as e:
+                recordTraceBack(logger)
+                retryc -= 1
+                if retryc >= 0:
+                    continue
+                else:
+                    sys.exit(2)
+            break
         nannysystems = json.loads(res.text.strip())[1:]
         with db:
             db.insert_nannysystems(district['no'], nannysystems)
@@ -48,6 +79,7 @@ if __name__ == "__main__":
             count3 = 2
 
         # Foreach nanny system
+        ss = requests.session()
         for nannysystem in nannysystems:
             print '  %s %s' % (nannysystem['name'], nannysystem['no'])
     
@@ -61,7 +93,18 @@ if __name__ == "__main__":
                 'nums':'',
                 'syst':'%s' % nannysystem['no'], #CW10107060
             }
-            res = ss.post('http://cwisweb.sfaa.gov.tw/04nanny/02map.jsp', data=payload)
+            retryc = 5
+            while True:
+                try:
+                    res = ss.post('http://cwisweb.sfaa.gov.tw/04nanny/02map.jsp', data=payload)
+                except Exception as e:
+                    recordTraceBack(logger)
+                    retryc -= 1
+                    if retryc >= 0:
+                        continue
+                    else:
+                        sys.exit(2)
+                break
             listurl = 'http://cwisweb.sfaa.gov.tw/04nanny/03list.jsp'
             listparameter = ""
             if _DEBUG_LESSGET:
@@ -70,7 +113,18 @@ if __name__ == "__main__":
             # Foreach page of nanny list
             while True:
                 print '    listpage %s' % listparameter
-                res = ss.get(listurl+listparameter)
+                retryc = 5
+                while True:
+                    try:
+                        res = ss.get(listurl+listparameter)
+                    except Exception as e:
+                        recordTraceBack(logger)
+                        retryc -= 1
+                        if retryc >= 0:
+                            continue
+                        else:
+                            sys.exit(2)
+                    break
                 sns = parser.parseNannyLink(res.text)
                 nextpage = parser.parseNannyLinkPage(res.text)
                 if _DEBUG_LESSGET:
@@ -80,7 +134,18 @@ if __name__ == "__main__":
                 nannies = []
                 for sn in sns:
                     print '      sn=%s' % sn
-                    res = ss.post('http://cwisweb.sfaa.gov.tw/04nanny/03view.jsp', data={'sn':sn})
+                    retryc = 5
+                    while True:
+                        try:
+                            res = ss.post('http://cwisweb.sfaa.gov.tw/04nanny/03view.jsp', data={'sn':sn})
+                        except Exception as e:
+                            recordTraceBack(logger)
+                            retryc -= 1
+                            if retryc >= 0:
+                                continue
+                            else:
+                                sys.exit(2)
+                        break
                     detail = parser.parseNannyDetails(res.text)
                     nannies.append(detail)
     #                 for dd in detail:

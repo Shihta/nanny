@@ -5,3 +5,5 @@
 .swp
 *.sqlite
 .DS_Store
+log_*.txt
+NCrawler.log
