@@ -54,7 +54,7 @@ jQuery(document).ready(function () {
     	//臺北市中山區社區保母系統 CW10107060
     	if (ns_selector.attr('value') != "" && pre_selection != ns_selector.attr('value')) {
     		pre_selection = ns_selector.attr('value');
-	    	var apiurl = "http://nanny.stark.tw/api/getnannies/"+ns_selector.attr('value')+"?callback=?";
+	    	var apiurl = "http://nanny.shida.info/api/getnannies/"+ns_selector.attr('value')+"?callback=?";
 	    	jQuery.getJSON(apiurl, {
 	    	}).done( function(data) {
 	    		jQuery("#NanniesSearchSystem").empty().append(jQuery("<table/>", {id:"NanniesSearchResultTable", border:"1"}));

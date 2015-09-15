@@ -8,7 +8,7 @@ case $1 in
         sudo -u nginx uwsgi --ini nsapi.ini &
   		;;
 	stop)
-        PID=$(ps -ef |grep 'nginx uwsgi' |grep -v grep |awk {'print $2'})
+        PID=$(ps -ef |egrep 'nginx uwsgi.+nsapi' |grep -v grep |awk {'print $2'})
         echo $PID
         kill $PID
   		;;
